@@ -1,6 +1,7 @@
 package com.stock_hardware.stock_hardware.controller;
 
 import com.stock_hardware.stock_hardware.exception.ModelNotFoundException;
+import com.stock_hardware.stock_hardware.model.Categoria;
 import com.stock_hardware.stock_hardware.model.Producto;
 import com.stock_hardware.stock_hardware.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,11 @@ public class ProductoController {
         return new ResponseEntity<>(productoService.create(producto), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Object> update(@RequestBody Producto producto){
-        productoService.update(producto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@PathVariable("id") Integer idProducto, @RequestBody Producto producto){
+        producto.setIdProducto(idProducto);
+        Producto updatedProducto = productoService.update(producto);
+        return new ResponseEntity<>(updatedProducto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -50,6 +52,12 @@ public class ProductoController {
         }
         productoService.delete(idProducto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<Producto>> filterByCategoria(@RequestParam Categoria categoria){
+        List<Producto> productos = productoService.filtrarPorCategoria(categoria);
+        return new ResponseEntity<>(productos, HttpStatus.OK);
     }
 
 }

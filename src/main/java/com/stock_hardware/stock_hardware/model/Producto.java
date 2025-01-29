@@ -22,6 +22,10 @@ public class Producto {
     @Column(name = "imagen", nullable = false)
     private String imagen;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria", nullable = false)
+    private Categoria categoria;
+
     public Integer getIdProducto() {
         return idProducto;
     }
@@ -60,5 +64,13 @@ public class Producto {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public Categoria getCategoria(){
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria){
+        this.categoria = categoria;
     }
 }

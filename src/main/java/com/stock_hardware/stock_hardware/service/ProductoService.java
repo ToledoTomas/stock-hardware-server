@@ -1,5 +1,6 @@
 package com.stock_hardware.stock_hardware.service;
 
+import com.stock_hardware.stock_hardware.model.Categoria;
 import com.stock_hardware.stock_hardware.model.Producto;
 import com.stock_hardware.stock_hardware.repository.IProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ProductoService implements IProductoService {
 
     @Override
     public Producto update(Producto producto) {
+        if (!productoRepo.existsById(producto.getIdProducto())) {
+            throw new RuntimeException("Producto no encontrado con ID: " + producto.getIdProducto());
+        }
         return productoRepo.save(producto);
     }
 
@@ -38,5 +42,10 @@ public class ProductoService implements IProductoService {
     @Override
     public void delete(Integer id) {
         productoRepo.deleteById(id);
+    }
+
+    @Override
+    public List<Producto> filtrarPorCategoria(Categoria categoria) {
+        return productoRepo.findByCategoria(categoria);
     }
 }
